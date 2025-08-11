@@ -4,7 +4,7 @@ import 'drop_chip.dart';
 
 class ReadTopBar extends StatelessWidget implements PreferredSizeWidget {
   final String bookLabel;
-  final String chapterLabel;
+  final String chapterLabel; // ex) "132편" or "3장"
   final VoidCallback onTapBook;
   final VoidCallback onTapChapter;
 
@@ -35,16 +35,14 @@ class ReadTopBar extends StatelessWidget implements PreferredSizeWidget {
               const Spacer(),
               DropChip(label: bookLabel, onTap: onTapBook),
               const SizedBox(width: 8),
-              DropChip(
-                  label: '$chapterLabel편',
-                  onTap: onTapChapter), // 표기: "132편" 느낌
+              DropChip(label: chapterLabel, onTap: onTapChapter),
               const SizedBox(width: 8),
               const DropChip(label: '개역한글', enabled: false),
               const SizedBox(width: 8),
               IconButton(
                 icon: const Icon(Icons.search, color: Colors.white70),
                 onPressed: () {
-                  // TODO: 검색 모달 연결 (원하면 구현해 드림)
+                  // TODO: 검색 모달 연결 (필요 시)
                 },
               ),
             ],

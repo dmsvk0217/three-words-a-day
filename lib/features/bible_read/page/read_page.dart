@@ -38,6 +38,12 @@ class _ReadPageState extends State<ReadPage> {
 
   void _onControllerChanged() => setState(() {});
 
+  // 시편이면 '편', 그 외엔 '장'
+  String _formatChapterLabel(String bookName, int chapter) {
+    final isPsalms = bookName == '시편';
+    return '$chapter${isPsalms ? '편' : '장'}';
+  }
+
   Future<void> _pickBookThenChapter() async {
     if (controller.books.isEmpty) return;
 
@@ -91,11 +97,14 @@ class _ReadPageState extends State<ReadPage> {
 
   @override
   Widget build(BuildContext context) {
+    final chapterLabel =
+        _formatChapterLabel(controller.bookName, controller.chapter);
+
     return Scaffold(
       backgroundColor: const Color(0xFF1F1B1A),
       appBar: ReadTopBar(
         bookLabel: controller.bookName,
-        chapterLabel: '${controller.chapter}',
+        chapterLabel: chapterLabel, // ← 규칙 반영된 라벨
         onTapBook: _pickBookThenChapter,
         onTapChapter: _pickChapterOnly,
       ),
