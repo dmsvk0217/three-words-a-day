@@ -12,26 +12,45 @@ class AppRoot extends StatefulWidget {
 class _AppRootState extends State<AppRoot> {
   int idx = 0;
 
+  // 탭 라벨(초기엔 '읽기'로 표시, 페이지가 로드되면 ReadPage가 업데이트해줌)
+  String tab1Label = '읽기';
+  String tab2Label = '읽기';
+
   @override
   Widget build(BuildContext context) {
-    final pages = const [
-      ReadPage(), // 탭1: 본문 읽기1
-      ReadPage(), // 탭2: 본문 읽기2
-      ScrapsPage(), // 탭3: 스크랩 목록
-      SettingsPage(), // 탭4: 설정(알림, 소개)
+    final pages = [
+      ReadPage(
+        onReferenceChanged: (label) => setState(() => tab1Label = label),
+      ), // 탭1
+      ReadPage(
+        onReferenceChanged: (label) => setState(() => tab2Label = label),
+      ), // 탭2
+      const ScrapsPage(), // 탭3
+      const SettingsPage(), // 탭4
     ];
+
     return Scaffold(
       body: IndexedStack(index: idx, children: pages),
       bottomNavigationBar: NavigationBar(
         selectedIndex: idx,
         onDestinationSelected: (i) => setState(() => idx = i),
-        destinations: const [
+        destinations: [
           NavigationDestination(
-              icon: Icon(Icons.menu_book_outlined), label: '읽기'),
-          NavigationDestination(icon: Icon(Icons.search), label: '탐색'),
+            icon: const Icon(Icons.menu_book_outlined),
+            label: tab1Label, // ← 현재 책/장으로 갱신
+          ),
           NavigationDestination(
-              icon: Icon(Icons.bookmark_border), label: '스크랩'),
-          NavigationDestination(icon: Icon(Icons.settings), label: '설정'),
+            icon: const Icon(Icons.menu_book_outlined), // ← 2번째도 읽기 아이콘
+            label: tab2Label,
+          ),
+          const NavigationDestination(
+            icon: Icon(Icons.bookmark_border),
+            label: '스크랩',
+          ),
+          const NavigationDestination(
+            icon: Icon(Icons.settings),
+            label: '설정',
+          ),
         ],
       ),
     );

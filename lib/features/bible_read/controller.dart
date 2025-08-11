@@ -22,6 +22,10 @@ class BibleReadController extends ChangeNotifier {
   int get chapter => _chapter;
   bool get loading => _loading;
   List<Verse> get verses => _verses;
+  String get bookAbbr => _books
+      .firstWhere((b) => b.id == _bookId,
+          orElse: () => Book(id: _bookId, name: '책', abbr: ''))
+      .abbr;
 
   Future<void> init() async {
     _books = await bible.fetchBooks();
