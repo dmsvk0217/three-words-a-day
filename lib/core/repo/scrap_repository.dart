@@ -31,4 +31,19 @@ class ScrapRepository {
     final rows = await db.query('scraps', orderBy: 'created_at DESC');
     return rows.map((e) => Scrap.fromMap(e)).toList();
   }
+
+  Future<bool> exists({
+    required int bookId,
+    required int chapter,
+    required int verse,
+  }) async {
+    final db = await _db;
+    final result = await db.query(
+      'scraps',
+      where: 'book_id = ? AND chapter = ? AND verse = ?',
+      whereArgs: [bookId, chapter, verse],
+      limit: 1,
+    );
+    return result.isNotEmpty;
+  }
 }

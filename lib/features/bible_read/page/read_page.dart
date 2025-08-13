@@ -204,19 +204,62 @@ class _ReadPageState extends State<ReadPage> {
                   itemCount: controller.verses.length,
                   itemBuilder: (_, index) {
                     final Verse verse = controller.verses[index];
+
                     return Column(
                       children: [
                         VerseTile(
                           verse: verse,
-                          scrapped: false,
-                          onScrapToggle: () async {
-                            await controller.toggleScrap(verse);
-                            if (!mounted) return;
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                  content: Text(
-                                      '스크랩 ${verse.bookId}:${verse.chapter}:${verse.verse}')),
+                          onLongPress: () async {
+                            // ★ 여기서만 비동기 조회
+                            final isScrapped =
+                                await controller.isScrapped(verse);
+
+                            final action = await showModalBottomSheet<String>(
+                              context: context,
+                              backgroundColor: const Color(0xFF222222),
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(14)),
+                              ),
+                              builder: (ctx) {
+                                return SafeArea(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      ListTile(
+                                        leading: Icon(
+                                          isScrapped
+                                              ? Icons.bookmark_remove
+                                              : Icons.bookmark_add,
+                                          color: Colors.white,
+                                        ),
+                                        title: Text(
+                                          isScrapped ? '스크랩 해제' : '스크랩 추가',
+                                          style: const TextStyle(
+                                              color: Colors.white),
+                                        ),
+                                        onTap: () =>
+                                            Navigator.of(ctx).pop('toggle'),
+                                      ),
+                                      const SizedBox(height: 8),
+                                    ],
+                                  ),
+                                );
+                              },
                             );
+
+                            if (action == 'toggle') {
+                              await controller.toggleScrap(verse);
+                              if (!mounted) return;
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    '스크랩 ${verse.bookId}:${verse.chapter}:${verse.verse}',
+                                  ),
+                                ),
+                              );
+                              setState(() {}); // 목록 새로고침(필요 시)
+                            }
                           },
                         ),
                         const Divider(height: 1, color: Colors.white12),

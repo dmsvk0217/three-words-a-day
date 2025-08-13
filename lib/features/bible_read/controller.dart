@@ -77,4 +77,12 @@ class BibleReadController extends ChangeNotifier {
     await scraps.toggleScrap(
         bookId: v.bookId, chapter: v.chapter, verse: v.verse);
   }
+
+  Future<bool> isScrapped(Verse verse) async {
+    return await scraps.exists(
+      bookId: verse.bookId,
+      chapter: verse.chapter,
+      verse: verse.verse,
+    );
+  }
 }
