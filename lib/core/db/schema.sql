@@ -26,6 +26,9 @@ CREATE TABLE IF NOT EXISTS verses (
   FOREIGN KEY(book_id) REFERENCES books(id)
 );
 
+-- 빠른 탐색용 인덱스
+CREATE INDEX idx_verses_ref ON verses(book_id, chapter, verse);
+
 -- 스크랩
 CREATE TABLE IF NOT EXISTS scraps (
   id INTEGER PRIMARY KEY AUTOINCREMENT,

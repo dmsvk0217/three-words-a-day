@@ -8,7 +8,7 @@ import 'package:sqflite/sqflite.dart';
 class AppDatabase {
   static Database? _db;
   static const _dbName = 'bible_krv.sqlite';
-  static const _assetDbPath = 'assets/db/bible_krv_sample.sqlite';
+  static const _assetDbPath = 'assets/db/bible_krv.sqlite';
 
   static Future<Database> instance() async {
     if (_db != null) return _db!;
