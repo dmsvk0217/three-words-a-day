@@ -262,7 +262,6 @@ class _ReadPageState extends State<ReadPage> {
                             }
                           },
                         ),
-                        const Divider(height: 1, color: Colors.white12),
                       ],
                     );
                   },
