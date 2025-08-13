@@ -11,11 +11,18 @@ import '../widgets/top_bar.dart';
 import '../widgets/verse_tile.dart';
 
 class ReadPage extends StatefulWidget {
-  const ReadPage({super.key, this.onReferenceChanged});
+  const ReadPage({
+    super.key,
+    this.onReferenceChanged,
+    this.initialBookId,
+    this.initialChapter,
+  });
 
   /// 상단 네비 라벨(탭 라벨)을 부모(AppRoot)에 전달
   /// 예: "왕상 12:8" 또는 "시 132:1"
   final void Function(String label)? onReferenceChanged;
+  final int? initialBookId;
+  final int? initialChapter;
 
   @override
   State<ReadPage> createState() => _ReadPageState();
@@ -33,9 +40,10 @@ class _ReadPageState extends State<ReadPage> {
   void initState() {
     super.initState();
     controller = BibleReadController(
-      bible: BibleRepository(),
-      scraps: ScrapRepository(),
-    );
+        bible: BibleRepository(),
+        scraps: ScrapRepository(),
+        initialBookId: widget.initialBookId ?? 1,
+        initialChapter: widget.initialChapter ?? 1);
     controller.addListener(_onControllerChanged);
     controller.init();
 

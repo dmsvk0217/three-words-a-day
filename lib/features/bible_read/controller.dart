@@ -9,13 +9,19 @@ class BibleReadController extends ChangeNotifier {
   final BibleRepository bible;
   final ScrapRepository scraps;
 
-  BibleReadController({required this.bible, required this.scraps});
-
   List<Book> _books = [];
-  int _bookId = 19; // 시편으로 시작(원하면 변경)
-  int _chapter = 1;
+  int _bookId;
+  int _chapter;
   bool _loading = true;
   List<Verse> _verses = [];
+
+  BibleReadController({
+    required this.bible,
+    required this.scraps,
+    int initialBookId = 1,
+    int initialChapter = 1,
+  })  : _bookId = initialBookId,
+        _chapter = initialChapter;
 
   List<Book> get books => _books;
   int get bookId => _bookId;

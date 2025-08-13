@@ -21,9 +21,13 @@ class _AppRootState extends State<AppRoot> {
     final pages = [
       ReadPage(
         onReferenceChanged: (label) => setState(() => tab1Label = label),
+        initialBookId: 1,
+        initialChapter: 1,
       ), // 탭1
       ReadPage(
         onReferenceChanged: (label) => setState(() => tab2Label = label),
+        initialBookId: 40,
+        initialChapter: 1,
       ), // 탭2
       const ScrapsPage(), // 탭3
       const SettingsPage(), // 탭4
