@@ -45,4 +45,46 @@ class BibleRepository {
     );
     return rows.map((e) => Verse.fromMap(e)).toList();
   }
+
+  /// 책 1권 조회 (예: 20 -> '잠언')
+  Future<Book> getBookById(int id) async {
+    final db = await _db;
+    final rows = await db.query(
+      'books',
+      where: 'id = ?',
+      whereArgs: [id],
+      limit: 1,
+    );
+    if (rows.isEmpty) {
+      throw StateError('Book not found: id=$id');
+    }
+    return Book.fromMap(rows.first);
+  }
+
+  /// 특정 절 1개 조회 (예: 잠언 10:7)
+  Future<Verse> getVerse(int bookId, int chapter, int verse) async {
+    final db = await _db;
+    final rows = await db.query(
+      'verses',
+      where: 'book_id = ? AND chapter = ? AND verse = ?',
+      whereArgs: [bookId, chapter, verse],
+      limit: 1,
+    );
+    if (rows.isEmpty) {
+      throw StateError('Verse not found: $bookId:$chapter:$verse');
+    }
+    return Verse.fromMap(rows.first);
+  }
+
+  // 선택) 한 장 전체 구절
+  Future<List<Verse>> getChapter(int bookId, int chapter) async {
+    final db = await _db;
+    final rows = await db.query(
+      'verses',
+      where: 'book_id = ? AND chapter = ?',
+      whereArgs: [bookId, chapter],
+      orderBy: 'verse ASC',
+    );
+    return rows.map((m) => Verse.fromMap(m)).toList();
+  }
 }
